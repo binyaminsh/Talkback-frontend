@@ -1,0 +1,59 @@
+<ng-container *ngIf="!invitationAccepted">
+  <h2>Waiting for opponent...</h2>
+</ng-container>
+
+<ng-container *ngIf="invitationAccepted">
+  <h2>Playing against {{ opponnentName }}</h2>
+  <div class="container">
+    <div class="chat-container">
+      <div class="messages-container">
+        <div *ngFor="let msg of chatMessages">
+          <p>
+            <span>{{ msg.sender }}: {{ msg.content }}</span>
+          </p>
+        </div>
+      </div>
+
+      <form class="input-container" #messageForm="ngForm" (ngSubmit)="sendMsg(msg.value, messageForm)">
+        <mat-form-field color="accent">
+          <input
+            ngModel
+            name="input"
+            class="input-message"
+            matInput
+            #msg
+            type="text"
+            placeholder="Type a message"
+          />
+        </mat-form-field>
+
+        <button type="submit" style="visibility: hidden">Submit</button>
+      </form>
+    </div>
+
+    <div class="chess">
+      <ngx-chess-board
+        [lightTileColor]="lightTileColor"
+        [darkTileColor]="darkTileColor"
+        [sourcePointColor]="sourcePointColor"
+        [destinationPointColor]="destinationPointColor"
+        [pieceIcons]="pieceIconInput"
+        [darkDisabled]="colour === 'white' || (chessService.gameStateObsv$ | async) === 2 && colour === 'black'"
+        [lightDisabled]="colour === 'black' || (chessService.gameStateObsv$ | async) === 2 && colour === 'white'"
+        (moveChange)="move($event)"
+        #board
+      ></ngx-chess-board>
+    </div>
+
+    <div class="chess--buttons">
+      <ng-container *ngIf="gameoverMessage">
+        <h2>{{ gameoverMessage }}</h2>
+      </ng-container>
+      <button mat-raised-button color="accent" (click)="reverse()">
+        Reverse
+      </button>
+      <button mat-raised-button color="primary" (click)="reset()">Reset</button>
+      <button mat-raised-button color="warn" (click)="resign()">Resign</button>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,28 @@
+<div class="contacts">
+  <h2>Contacts</h2>
+
+  <ul *ngIf="!isLoggedIn">
+    <li *ngFor="let user of users$ | async">
+      {{ user.displayName }}
+    </li>
+  </ul>
+
+  <div *ngIf="isLoggedIn">
+    <h4>Online</h4>
+    <ul *ngFor="let user of users$ | async">
+      <ng-container *ngIf="user.isOnline && (authService.currentUser$ | async)?.id !== user.id">
+        <app-user [user]="user"></app-user>
+        <button (click)="onChatClick(user)">Chat</button>
+        <button (click)="onPlayClick(user)">Play</button>
+      </ng-container>
+    </ul>
+
+    <h4>Offline</h4>
+    <ul *ngFor="let user of users$ | async">
+      <ng-container *ngIf="!user.isOnline">
+        <app-user [user]="user"></app-user>
+        <button (click)="onChatClick(user)">Chat</button>
+      </ng-container>
+    </ul>
+  </div>  
+</div>

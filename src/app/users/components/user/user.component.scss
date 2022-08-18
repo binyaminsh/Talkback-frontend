@@ -1,0 +1,15 @@
+.user {
+    padding: 2rem;
+    position: relative;
+}
+
+.user-online::before {
+    content: "";
+    position: absolute;
+    top: 0.2rem;
+    left: -1rem;
+    width: 0.2rem;
+    height: 0.2rem;
+    background-color: green;
+    border-radius: 999rem;
+}

@@ -1,0 +1,47 @@
+<!-- <h1> 
+    Chat with {{selectedUser.displayName}}
+</h1> -->
+
+<!-- <ng-container *ngIf="messages">
+  <div conversation-container>
+    <ng-container *ngFor="let msg of messages | async">
+      <p>{{ msg.sender }}: {{ msg.content }}</p>
+    </ng-container>
+  </div>
+</ng-container> -->
+
+<ng-container *ngIf="messages">
+  <div class="conversation-container">
+    <ng-container *ngFor="let msg of messages | async">
+      <div [ngClass]="{'message--user' : msg.sender === currentUser?.displayName}" class="message" >
+        <div class="message-container">
+          <div class="message-body">
+            <p>{{ msg.content }}</p>
+          </div>
+          <div class="message-info">
+            <span class="message-timestamp">{{ msg.timeStamp | date: 'shortTime' }}</span>
+            <span class="message-info-seperator">&#x2022;</span>
+            <span class="message-username">{{msg.sender}}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="conversationId">
+      <form [formGroup]="form!" (ngSubmit)="sendMessage()">
+        <mat-form-field class="message-input">
+          <input
+            type="text"
+            matInput
+            formControlName="message"
+            placeholder="Type a message"
+          />
+        </mat-form-field>
+    
+        <button mat-raised-button color="primary" type="submit">Send</button>
+      </form>
+    </ng-container>
+  </div>
+</ng-container>
+
+

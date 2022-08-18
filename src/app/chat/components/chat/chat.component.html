@@ -1,0 +1,22 @@
+<div class="container">
+  <ng-container *ngIf="conversations">
+    <div class="conversation-list">
+      <h2>Conversations</h2>
+      <div *ngFor="let convo of conversations | async">
+        <div class="conversation-list-item" (click)="conversationSelectedId = convo.id">
+          <span>{{ convo.groupName }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="conversationSelectedId; else noConvoSelected">
+    <div class="conversation-container">
+      <app-conversation [conversationId]="conversationSelectedId" ></app-conversation>
+    </div>
+  </ng-container>
+  
+  <ng-template #noConvoSelected>
+    <h2>Welcome to chat</h2>
+  </ng-template>
+</div>

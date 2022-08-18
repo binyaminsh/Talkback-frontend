@@ -1,0 +1,65 @@
+<header>
+  <mat-toolbar color="primary">
+    <button mat-icon-button [routerLink]="['/']">
+      <mat-icon> home </mat-icon>
+    </button>
+    <a mat-flat-button color="primary" [routerLink]="['/chat']">
+      Chat
+    </a>
+    <a mat-flat-button color="primary" [routerLink]="['/chess']">
+      Chess
+    </a>
+
+    <span class="separator"></span>
+    <a *ngIf="!isLoggedIn" mat-flat-button color="primary" [routerLink]="['/register']">
+        Register
+    </a>
+    <a *ngIf="!isLoggedIn" mat-flat-button color="primary" [routerLink]="['/login']">
+     Login
+    </a>
+    <ng-container *ngIf="isLoggedIn && (currentUser$ | async) as user">
+      {{user.displayName | titlecase}}
+
+      <button mat-button [matMenuTriggerFor]="challenge_menu">
+        <mat-icon [matBadgeHidden]="challengeNotifications.length === 0" [matBadge]="challengeNotifications.length" matBadgeColor="warn">games</mat-icon>
+      </button>
+
+      <mat-menu #challenge_menu="matMenu" (close)="toggleBadgeVisibility()">
+        <ng-template matMenuContent>
+          <ng-container *ngIf="challengeNotifications.length > 0; else no_notifications">
+            <ng-container *ngFor="let notification of challengeNotifications">
+              <div mat-menu-item>
+                {{notification}}
+                <button mat-raised-button color="primary" (click)="challengeAccepted()"> Accept </button>
+                <button mat-raised-button color="accent" (click)="challengeDeclined()"> Decline </button>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-template #no_notifications>
+            <span mat-menu-item>no new notifications</span>
+          </ng-template>
+        </ng-template>
+      </mat-menu>
+  
+
+    <button mat-button [matMenuTriggerFor]="chat_menu">
+      <mat-icon [matBadgeHidden]="chatNotifications.length === 0" [matBadge]="chatNotifications.length" matBadgeColor="warn">notifications</mat-icon>
+    </button>
+
+    <mat-menu #chat_menu="matMenu" (close)="toggleBadgeVisibility()">
+      <ng-template matMenuContent>
+        <ng-container *ngIf="chatNotifications.length > 0; else no_notifications">
+          <ng-container *ngFor="let notification of chatNotifications">
+            <button mat-menu-item>{{notification}}</button>
+          </ng-container>
+        </ng-container>
+        <ng-template #no_notifications>
+          <span mat-menu-item>no new notifications</span>
+        </ng-template>
+      </ng-template>
+    </mat-menu>
+
+      <a mat-flat-button color="primary"(click)="onLogout()">Logout</a>
+    </ng-container>
+  </mat-toolbar>
+</header>

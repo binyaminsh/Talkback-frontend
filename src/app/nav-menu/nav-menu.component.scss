@@ -1,0 +1,11 @@
+.separator {
+  flex: 1 1 auto;
+}
+
+.mat-badge.hide-text {
+  color: transparent;
+}
+
+::ng-deep.mat-menu-panel {
+  max-width: none !important;
+}
